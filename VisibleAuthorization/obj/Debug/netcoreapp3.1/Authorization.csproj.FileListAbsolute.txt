@@ -1,9 +1,0 @@
-C:\Users\marcel.barner\source\repos\AspNetCore.Advanced\AspNetCore.Advanced\Authorization\obj\Debug\netcoreapp3.1\Authorization.csprojAssemblyReference.cache
-C:\Users\marcel.barner\source\repos\AspNetCore.Advanced\AspNetCore.Advanced\Authorization\obj\Debug\netcoreapp3.1\Authorization.csproj.CoreCompileInputs.cache
-C:\Users\marcel.barner\source\repos\AspNetCore.Advanced\AspNetCore.Advanced\Authorization\obj\Debug\netcoreapp3.1\Authorization.AssemblyInfoInputs.cache
-C:\Users\marcel.barner\source\repos\AspNetCore.Advanced\AspNetCore.Advanced\Authorization\obj\Debug\netcoreapp3.1\Authorization.AssemblyInfo.cs
-C:\Users\marcel.barner\source\repos\AspNetCore.Advanced\AspNetCore.Advanced\Authorization\bin\Debug\netcoreapp3.1\AspNetCore.Advanced.Authorization.deps.json
-C:\Users\marcel.barner\source\repos\AspNetCore.Advanced\AspNetCore.Advanced\Authorization\bin\Debug\netcoreapp3.1\AspNetCore.Advanced.Authorization.dll
-C:\Users\marcel.barner\source\repos\AspNetCore.Advanced\AspNetCore.Advanced\Authorization\bin\Debug\netcoreapp3.1\AspNetCore.Advanced.Authorization.pdb
-C:\Users\marcel.barner\source\repos\AspNetCore.Advanced\AspNetCore.Advanced\Authorization\obj\Debug\netcoreapp3.1\AspNetCore.Advanced.Authorization.dll
-C:\Users\marcel.barner\source\repos\AspNetCore.Advanced\AspNetCore.Advanced\Authorization\obj\Debug\netcoreapp3.1\AspNetCore.Advanced.Authorization.pdb

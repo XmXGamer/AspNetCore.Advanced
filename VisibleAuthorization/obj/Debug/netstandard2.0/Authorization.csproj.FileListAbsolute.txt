@@ -1,5 +1,0 @@
-C:\Users\marcel.barner\source\repos\AspNetCore.Advanced\Authorization\Authorization\bin\Debug\netstandard2.0\Authorization.deps.json
-C:\Users\marcel.barner\source\repos\AspNetCore.Advanced\Authorization\Authorization\bin\Debug\netstandard2.0\Authorization.dll
-C:\Users\marcel.barner\source\repos\AspNetCore.Advanced\Authorization\Authorization\obj\Debug\netstandard2.0\Authorization.csprojAssemblyReference.cache
-C:\Users\marcel.barner\source\repos\AspNetCore.Advanced\Authorization\Authorization\obj\Debug\netstandard2.0\Authorization.AssemblyInfoInputs.cache
-C:\Users\marcel.barner\source\repos\AspNetCore.Advanced\Authorization\Authorization\obj\Debug\netstandard2.0\Authorization.AssemblyInfo.cs
