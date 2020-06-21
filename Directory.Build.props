@@ -1,0 +1,35 @@
+<Project>
+
+  <PropertyGroup>
+    <TargetFramework Condition="'$(MSBuildProjectExtension)' == '.csproj'">netcoreapp3.1</TargetFramework>
+    <LangVersion Condition="'$(MSBuildProjectExtension)' == '.csproj'">8.0</LangVersion>
+    <AssemblyName>AspNetCore.Advanced.$(MSBuildProjectName)</AssemblyName>
+    <RootNamespace>AspNetCore.Advanced.$(MSBuildProjectName)</RootNamespace>
+    <nullable>enable</nullable>
+  </PropertyGroup>
+
+  <ItemGroup Label="Test Projects Packages" Condition="$(MSBuildProjectName.EndsWith('Tests'))">
+    <PackageReference Include="xunit.core" Version="2.4.1" />
+    <PackageReference Include="xunit.analyzers" Version="0.10.0"/>
+    <PackageReference Include="xunit.runner.visualstudio" Version="2.4.1">
+      <PrivateAssets>all</PrivateAssets>
+      <IncludeAssets>runtime; build; native; contentfiles; analyzers; buildtransitive</IncludeAssets>
+    </PackageReference>
+    <PackageReference Include="FluentAssertions" Version="5.10.3" />
+    <PackageReference Include="FluentAssertions.Analyzers" Version="0.11.4" />
+    <PackageReference Include="FluentAssertions.Web" Version="1.0.123" />
+    <PackageReference Include="Microsoft.NET.Test.Sdk" Version="16.5.0" />
+    <PackageReference Include="Moq" Version="4.12.0" />
+    <PackageReference Include="coverlet.collector" Version="1.2.0" />
+  </ItemGroup>
+
+  <ItemGroup Label="Test Projects Projects" Condition="$(MSBuildProjectName.EndsWith('Tests'))">
+    <ProjectReference Include="..\$(MSBuildProjectName.Replace('.Tests',''))\$(MSBuildProjectName.Replace('.Tests','')).csproj" />
+  </ItemGroup>
+
+  <ItemGroup Label="Library Projects" Condition="!$(MSBuildProjectName.EndsWith('Tests'))">
+    <AssemblyAttribute Include="System.Runtime.CompilerServices.InternalsVisibleToAttribute">
+      <_Parameter1>AspNetCore.Advanced.$(MSBuildProjectName).Tests</_Parameter1>
+    </AssemblyAttribute>
+  </ItemGroup>
+</Project>
