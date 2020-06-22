@@ -1,0 +1,9 @@
+﻿<Project Sdk="Microsoft.NET.Sdk.Web">
+
+  <PropertyGroup>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <ProjectReference Include="..\VisibleAuthorization\VisibleAuthorization.csproj" />
+  </ItemGroup>
+</Project>

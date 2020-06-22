@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Security.Claims;
 using System.Text;
 using System.Text.Encodings.Web;
 using System.Threading.Tasks;
@@ -19,11 +20,12 @@ namespace AspNetCore.Advanced.SecretAuthentication
         }
     }
 
-    public class SecretAuthenticationOptions: AuthenticationSchemeOptions
+    public class SecretAuthenticationOptions : AuthenticationSchemeOptions
     {
+        public string? Secret { get; set; }
     }
 
-    public class SecretAuthenticationHandler: AuthenticationHandler<SecretAuthenticationOptions>
+    public class SecretAuthenticationHandler : AuthenticationHandler<SecretAuthenticationOptions>
     {
         private static string s_authenticationHeaderName = "Authorization";
 
@@ -33,18 +35,29 @@ namespace AspNetCore.Advanced.SecretAuthentication
 
         protected override Task<AuthenticateResult> HandleAuthenticateAsync()
         {
-            if (!Request.Headers.TryGetValue(s_authenticationHeaderName, out var requestApiKey))
+            if (!Request.Headers.TryGetValue(s_authenticationHeaderName, out var secrets))
             {
                 return Task.FromResult(AuthenticateResult.NoResult());
             }
 
-
-            if (!_apiKeyConfiguration.GetApiKeyValue()
-                .Equals(requestApiKey[0], StringComparison.OrdinalIgnoreCase))
+            if (Options.Secret is null)
             {
-                return Task.FromResult(AuthenticateResult.Fail("Wrong Api Key"));
+                return Task.FromResult(AuthenticateResult.NoResult());
+            }
+
+            if (!secrets[0].StartsWith(SecretAuthenticationDefaults.AuthenticationSchema))
+            {
+                return Task.FromResult(AuthenticateResult.NoResult());
+            }
+            var secret = secrets[0].Replace($"{SecretAuthenticationDefaults.AuthenticationSchema} ", "");
+
+            if (!Options.Secret
+                .Equals(secret, StringComparison.OrdinalIgnoreCase))
+            {
+                return Task.FromResult(AuthenticateResult.Fail("Wrong Secret"));
             }
             var identity = new ClaimsIdentity(Scheme.Name);
+            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, secret));
             var principal = new ClaimsPrincipal(identity);
             var ticket = new AuthenticationTicket(principal, Scheme.Name);
             return Task.FromResult(AuthenticateResult.Success(ticket));
