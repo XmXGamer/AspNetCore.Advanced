@@ -11,11 +11,11 @@ using Xunit;
 
 namespace SecretAuthentication.Tests
 {
-    public class IntegrationTests : IClassFixture<WebApplicationFactory<TestStartup>>
+    public class IntegrationTests : IClassFixture<WebApplicationFactory<Startup>>
     {
-        private readonly WebApplicationFactory<TestStartup> _webApplicationFactory;
+        private readonly WebApplicationFactory<Startup> _webApplicationFactory;
 
-        public IntegrationTests(WebApplicationFactory<TestStartup> webApplicationFactory)
+        public IntegrationTests(WebApplicationFactory<Startup> webApplicationFactory)
         {
             _webApplicationFactory = webApplicationFactory;
         }
