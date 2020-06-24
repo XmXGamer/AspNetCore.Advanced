@@ -18,49 +18,11 @@ namespace AspNetCore.Advanced.SecretAuthentication
             builder.AddScheme<SecretAuthenticationOptions, SecretAuthenticationHandler>(SecretAuthenticationDefaults.AuthenticationSchema, configureOptions);
             return builder;
         }
-    }
 
-    public class SecretAuthenticationOptions : AuthenticationSchemeOptions
-    {
-        public string? Secret { get; set; }
-    }
-
-    public class SecretAuthenticationHandler : AuthenticationHandler<SecretAuthenticationOptions>
-    {
-        private static string s_authenticationHeaderName = "Authorization";
-
-        public SecretAuthenticationHandler(IOptionsMonitor<SecretAuthenticationOptions> options, ILoggerFactory logger, UrlEncoder encoder, ISystemClock clock) : base(options, logger, encoder, clock)
+        public static AuthenticationBuilder AddEmptySchemaSecretAuthentication(this AuthenticationBuilder builder, Action<SecretAuthenticationOptions> configureOptions)
         {
-        }
-
-        protected override Task<AuthenticateResult> HandleAuthenticateAsync()
-        {
-            if (!Request.Headers.TryGetValue(s_authenticationHeaderName, out var secrets))
-            {
-                return Task.FromResult(AuthenticateResult.NoResult());
-            }
-
-            if (Options.Secret is null)
-            {
-                return Task.FromResult(AuthenticateResult.NoResult());
-            }
-
-            if (!secrets[0].StartsWith(SecretAuthenticationDefaults.AuthenticationSchema))
-            {
-                return Task.FromResult(AuthenticateResult.NoResult());
-            }
-            var secret = secrets[0].Replace($"{SecretAuthenticationDefaults.AuthenticationSchema} ", "");
-
-            if (!Options.Secret
-                .Equals(secret, StringComparison.OrdinalIgnoreCase))
-            {
-                return Task.FromResult(AuthenticateResult.Fail("Wrong Secret"));
-            }
-            var identity = new ClaimsIdentity(Scheme.Name);
-            identity.AddClaim(new Claim(ClaimTypes.NameIdentifier, secret));
-            var principal = new ClaimsPrincipal(identity);
-            var ticket = new AuthenticationTicket(principal, Scheme.Name);
-            return Task.FromResult(AuthenticateResult.Success(ticket));
+            builder.AddScheme<SecretAuthenticationOptions, EmptySchemaSecretAuthenticationHandler>(SecretAuthenticationDefaults.EmptyAuthenticationSchema, configureOptions);
+            return builder;
         }
     }
 }
