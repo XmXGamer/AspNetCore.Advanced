@@ -26,6 +26,12 @@ namespace PermissionAuthorization
                 return;
             }
 
+            if (_permissionSources is null)
+            {
+                await _next(context);
+                return;
+            }
+
             var permissionSets = _permissionSources.Select(x => x.GetPermissions(context));
 
             var identities = permissionSets.Select(x => new ClaimsIdentity(x.Select(y => new Claim("permissions", y))));

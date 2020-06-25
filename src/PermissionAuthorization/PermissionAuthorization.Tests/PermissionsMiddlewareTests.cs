@@ -1,3 +1,4 @@
+using FluentAssertions;
 using Microsoft.AspNetCore.Http;
 using Moq;
 using PermissionAuthorization;
@@ -78,9 +79,26 @@ namespace AspNetCore.Advanced.PermissionAuthorization.Tests
             // Arrange
             var permissionsMiddleware = CreatePermissionsMiddleware();
             HttpContext context = new DefaultHttpContext();
-            var identity = new Mock<IIdentity>();
-            identity.SetupGet(i => i.IsAuthenticated).Returns(true);
-            context.User = new ClaimsPrincipal(identity.Object);
+
+            // Act
+            await permissionsMiddleware.InvokeAsync(
+                context);
+
+            // Assert
+            mockRequestDelegate.Verify(x => x.Invoke(context), Times.Once);
+            mockRepository.VerifyAll();
+        }
+
+        [Fact]
+        public async Task Invoke_ShouldCallNext_IfPermissionSourcesIsNull()
+        {
+            // Arrange
+            var permissionsMiddleware = CreatePermissionsMiddleware(null);
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[0], "TestAuthentication"));
+            var context = new DefaultHttpContext()
+            {
+                User = user
+            };
 
             // Act
             await permissionsMiddleware.InvokeAsync(
@@ -111,23 +129,24 @@ namespace AspNetCore.Advanced.PermissionAuthorization.Tests
         }
 
         [Fact]
-        public async Task Invoke_UserShouldHavePermissionRead_IfPermissionSourcesIsEmpty()
+        public async Task Invoke_UserShouldHavePermission_IfPermissionSourcesIsSet()
         {
             // Arrange
             var permissionSource = mockRepository.Create<IPermissionSource>();
             permissionSource.Setup(c => c.GetPermissions(It.IsAny<HttpContext>())).Returns((new List<string>() { "test" }).ToImmutableList());
             var permissionsMiddleware = CreatePermissionsMiddleware(new List<IPermissionSource>() { permissionSource.Object });
-            HttpContext context = new DefaultHttpContext();
-            var identity = new Mock<IIdentity>();
-            identity.SetupGet(i => i.IsAuthenticated).Returns(true);
-            context.User = new ClaimsPrincipal(identity.Object);
+            var user = new ClaimsPrincipal(new ClaimsIdentity(new Claim[0], "TestAuthentication"));
+            var context = new DefaultHttpContext()
+            {
+                User = user
+            };
 
             // Act
             await permissionsMiddleware.InvokeAsync(
                 context);
 
             // Assert
-
+            user.Claims.Should().Contain(x => x.Type == "permissions" && x.Value == "test");
             mockRepository.VerifyAll();
         }
     }
